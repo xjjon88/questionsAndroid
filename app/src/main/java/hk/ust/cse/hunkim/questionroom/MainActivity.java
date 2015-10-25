@@ -42,6 +42,9 @@ public class MainActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
+
         //initialized once with an Android context.
         Firebase.setAndroidContext(this);
 
@@ -57,6 +60,10 @@ public class MainActivity extends ListActivity {
         }
 
         setTitle("Room name: " + roomName);
+
+        //setup title // Jonathan Yu
+        TextView mRoomTitleTextView = (TextView) findViewById(R.id.roomTitle);
+        mRoomTitleTextView.setText(roomName);
 
         // Setup our Firebase mFirebaseRef
         mFirebaseRef = new Firebase(FIREBASE_URL).child(roomName).child("questions");
