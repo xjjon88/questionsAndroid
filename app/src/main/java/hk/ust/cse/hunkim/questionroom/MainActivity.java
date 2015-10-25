@@ -65,7 +65,6 @@ public class MainActivity extends ListActivity {
         Firebase mFBTitle = new Firebase(FIREBASE_URL).child(roomName);
         mFBTitle.child("roomTitle").setValue(roomName);
 
-
         // Setup our input methods. Enter key on the keyboard or pushing the send button
         EditText inputText = (EditText) findViewById(R.id.messageInput);
         inputText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -148,7 +147,54 @@ public class MainActivity extends ListActivity {
         }
     }
 
-    public void updateEcho(String key) {
+
+    public void updateEcho1(String key){             //dislike
+        if (dbutil.contains(key)) {
+            Log.e("Dupkey", "Key is already in the DB!");
+            return;
+        }
+
+        final Firebase echoRef1 = mFirebaseRef.child(key).child("echo1");
+        echoRef1.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Long echoValue1 = (Long) dataSnapshot.getValue();
+                        Log.e("Echo1 update:", "" + echoValue1);
+
+                        echoRef1.setValue(echoValue1 + 1);
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                }
+        );
+
+        final Firebase orderRef = mFirebaseRef.child(key).child("order");
+        orderRef.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Long orderValue = (Long) dataSnapshot.getValue();
+                        Log.e("Order update:", "" + orderValue);
+
+                        orderRef.setValue(orderValue + 1);
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                }
+        );
+
+        // Update SQLite DB
+        dbutil.put(key);
+    }
+
+    public void updateEcho(String key) {                    //like
         if (dbutil.contains(key)) {
             Log.e("Dupkey", "Key is already in the DB!");
             return;
@@ -172,6 +218,8 @@ public class MainActivity extends ListActivity {
                 }
         );
 
+
+
         final Firebase orderRef = mFirebaseRef.child(key).child("order");
         orderRef.addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -193,6 +241,7 @@ public class MainActivity extends ListActivity {
         // Update SQLite DB
         dbutil.put(key);
     }
+
 
     public void Close(View view) {
         finish();
