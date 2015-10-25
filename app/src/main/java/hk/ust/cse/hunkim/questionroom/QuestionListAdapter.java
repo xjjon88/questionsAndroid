@@ -51,11 +51,10 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
         DBUtil dbUtil = activity.getDbutil();
 
         // Map a Chat object to an entry in our listview
-        int echo = question.getEcho();
+        int echo = question.getEcho();//like button
         Button echoButton = (Button) view.findViewById(R.id.echo);
         echoButton.setText("" + echo);
         echoButton.setTextColor(Color.BLUE);
-
 
         echoButton.setTag(question.getKey()); // Set tag for button
 
@@ -65,6 +64,24 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
                     public void onClick(View view) {
                         MainActivity m = (MainActivity) view.getContext();
                         m.updateEcho((String) view.getTag());
+                    }
+                }
+
+        );
+
+        int echo1 = question.getEcho1();//dislike button
+        Button echoButton1 = (Button) view.findViewById(R.id.echo1);
+        echoButton1.setText("" + echo1);
+        echoButton1.setTextColor(Color.BLUE);
+
+        echoButton1.setTag(question.getKey()); // Set tag for button
+
+        echoButton1.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view1) {
+                        MainActivity m = (MainActivity) view1.getContext();
+                        m.updateEcho1((String) view1.getTag());
                     }
                 }
 
@@ -84,7 +101,7 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
                                     @Override
                                     public void onClick(View view) {
                                         MainActivity m = (MainActivity) view.getContext();
-                                        m.updateEcho((String) view.getTag());
+                                        //m.updateEcho((String) view.getTag());
                                     }
                                 }
 
@@ -93,19 +110,22 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
         // check if we already clicked
         boolean clickable = !dbUtil.contains(question.getKey());
 
-        echoButton.setClickable(clickable);
+        echoButton.setClickable(clickable);//like
         echoButton.setEnabled(clickable);
+        echoButton1.setClickable(clickable);//dislike
+        echoButton1.setEnabled(clickable);
         view.setClickable(clickable);
 
 
         // http://stackoverflow.com/questions/8743120/how-to-grey-out-a-button
         // grey out our button
         if (clickable) {
-            echoButton.getBackground().setColorFilter(null);
+            echoButton.getBackground().setColorFilter(null);//like
+            echoButton1.getBackground().setColorFilter(null);//dislike
         } else {
-            echoButton.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
+            echoButton.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);//like
+            echoButton1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);//dislike
         }
-
 
         view.setTag(question.getKey());  // store key in the view
     }
