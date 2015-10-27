@@ -155,19 +155,19 @@ public class MainActivity extends ListActivity {
     }
 
 
-    public void updateEcho1(String key){             //dislike
+    public void updateNecho(String key){             //dislike
         if (dbutil.contains(key)) {
             Log.e("Dupkey", "Key is already in the DB!");
             return;
         }
 
-        final Firebase echoRef1 = mFirebaseRef.child(key).child("echo1");
+        final Firebase echoRef1 = mFirebaseRef.child(key).child("necho");
         echoRef1.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Long echoValue1 = (Long) dataSnapshot.getValue();
-                        Log.e("Echo1 update:", "" + echoValue1);
+                        Log.e("necho update:", "" + echoValue1);
 
                         echoRef1.setValue(echoValue1 + 1);
                     }

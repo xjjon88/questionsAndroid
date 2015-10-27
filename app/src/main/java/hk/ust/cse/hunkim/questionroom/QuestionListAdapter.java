@@ -69,9 +69,9 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
 
         );
 
-        int echo1 = question.getEcho1();//dislike button
+        int necho = question.getNecho();//dislike button
         Button echoButton1 = (Button) view.findViewById(R.id.echo1);
-        echoButton1.setText("" + echo1);
+        echoButton1.setText("" + necho);
         echoButton1.setTextColor(Color.BLUE);
 
         echoButton1.setTag(question.getKey()); // Set tag for button
@@ -81,7 +81,7 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
                     @Override
                     public void onClick(View view1) {
                         MainActivity m = (MainActivity) view1.getContext();
-                        m.updateEcho1((String) view1.getTag());
+                        m.updateNecho((String) view1.getTag());
                     }
                 }
 

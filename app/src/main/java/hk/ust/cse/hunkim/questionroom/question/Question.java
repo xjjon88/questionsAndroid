@@ -21,9 +21,27 @@ public class Question implements Comparable<Question> {
     private long timestamp;
     private String tags;
     private int echo;
-    private int echo1;
+    private int necho;
     private int order;
     private boolean newQuestion;
+    private boolean pinned;
+    private boolean hidden;
+
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
+
+    public boolean isPinned() {
+        return pinned;
+    }
+
+    public void setPinned(boolean pinned) {
+        this.pinned = pinned;
+    }
 
     public String getDateString() {
         return dateString;
@@ -49,7 +67,7 @@ public class Question implements Comparable<Question> {
     public Question(String message) {
         this.wholeMsg = message;
         this.echo = 0;
-        this.echo1 = 0;
+        this.necho = 0;
         this.head = getFirstSentence(message).trim();
         this.desc = "";
         if (this.head.length() < message.length()) {
@@ -105,8 +123,8 @@ public class Question implements Comparable<Question> {
         return echo;
     }
 
-    public int getEcho1() {
-        return echo1;
+    public int getNecho() {
+        return necho;
     }
 
     public String getWholeMsg() {
