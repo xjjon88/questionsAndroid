@@ -151,14 +151,25 @@ public class MainActivity extends ListActivity {
             // Create a new, auto-generated child of that chat location, and save our chat data there
             mFirebaseRef.push().setValue(question);
             inputText.setText("");
+
+            //mChatListAdapter.notifyDataSetChanged();
         }
     }
 
 
     public void updateNecho(String key){             //dislike
-        if (dbutil.contains(key)) {
-            Log.e("Dupkey", "Key is already in the DB!");
-            return;
+
+        final int change;
+
+        if(dbutil.contains("p" + key) && !dbutil.contains("d"+key) ) {
+            updateEcho(key);
+        }
+
+
+        if (dbutil.contains("d"+key)) {
+            change = -1;
+        }else{
+            change = 1;
         }
 
         final Firebase echoRef1 = mFirebaseRef.child(key).child("necho");
@@ -169,7 +180,7 @@ public class MainActivity extends ListActivity {
                         Long echoValue1 = (Long) dataSnapshot.getValue();
                         Log.e("necho update:", "" + echoValue1);
 
-                        echoRef1.setValue(echoValue1 + 1);
+                        echoRef1.setValue(echoValue1 + change);
                     }
 
                     @Override
@@ -187,7 +198,7 @@ public class MainActivity extends ListActivity {
                         Long orderValue = (Long) dataSnapshot.getValue();
                         Log.e("Order update:", "" + orderValue);
 
-                        orderRef.setValue(orderValue + 1);
+                        orderRef.setValue(orderValue - change);
                     }
 
                     @Override
@@ -198,15 +209,27 @@ public class MainActivity extends ListActivity {
         );
 
         // Update SQLite DB
-        dbutil.put(key);
+        if (dbutil.contains("d"+key)) {
+            dbutil.delete("d" + key);
+        }else
+
+            dbutil.put("d" + key);
     }
 
     public void updateEcho(String key) {                    //like
-        if (dbutil.contains(key)) {
-            Log.e("Dupkey", "Key is already in the DB!");
-            return;
+
+
+        final int change;
+
+        if(dbutil.contains("d" + key) && !dbutil.contains("p"+key)){
+            updateNecho(key);
         }
 
+        if (dbutil.contains("p"+key)) {
+            change = -1;
+        }else{
+            change = 1;
+        }
         final Firebase echoRef = mFirebaseRef.child(key).child("echo");
         echoRef.addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -215,7 +238,7 @@ public class MainActivity extends ListActivity {
                         Long echoValue = (Long) dataSnapshot.getValue();
                         Log.e("Echo update:", "" + echoValue);
 
-                        echoRef.setValue(echoValue + 1);
+                        echoRef.setValue(echoValue + change);
                     }
 
                     @Override
@@ -235,7 +258,7 @@ public class MainActivity extends ListActivity {
                         Long orderValue = (Long) dataSnapshot.getValue();
                         Log.e("Order update:", "" + orderValue);
 
-                        orderRef.setValue(orderValue - 1);
+                        orderRef.setValue(orderValue + change);
                     }
 
                     @Override
@@ -245,8 +268,15 @@ public class MainActivity extends ListActivity {
                 }
         );
 
-        // Update SQLite DB
-        dbutil.put(key);
+        if(dbutil.contains("p"+key)){
+            dbutil.delete("p"+key);
+        }else{
+            dbutil.put("p"+key);
+        }
+    }
+
+    public void removeKey(String key){
+        dbutil.delete(key);
     }
 
 

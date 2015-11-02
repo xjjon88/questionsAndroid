@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.test.ActivityUnitTestCase;
 import android.test.suitebuilder.annotation.MediumTest;
+import android.test.suitebuilder.annotation.SmallTest;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -84,5 +85,13 @@ public class MainActivityTest extends ActivityUnitTestCase<MainActivity> {
 
         // TODO: How to confirm a new text is posted?
         // assertEquals("Child count: ", lView.getChildCount(), 10);
+    }
+
+
+    @SmallTest
+    public void testRoomTitle(){
+        Activity activity = startActivity(mStartIntent, null, null);
+        TextView mTextView = (TextView) getActivity().findViewById(R.id.roomTitle);
+        assertEquals("Room Title", "all", mTextView.getText());
     }
 }

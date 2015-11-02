@@ -60,9 +60,26 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
 
         echoButton.setOnClickListener(
                 new View.OnClickListener() {
+                    boolean flag = true;
                     @Override
                     public void onClick(View view) {
+                        //MainActivity m = (MainActivity) view.getContext();
+                        //System.out.println((String) view.getTag());
+                        //m.updateEcho((String) view.getTag());
+
                         MainActivity m = (MainActivity) view.getContext();
+                        System.out.println("Flag " + flag + " " + (String) view.getTag());
+
+                        if (flag) {
+                            view.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);//like
+                            flag = false;
+                            System.out.println("AFlag " + flag + " " + (String) view.getTag());
+                        } else {
+                            view.getBackground().setColorFilter(Color.YELLOW, PorterDuff.Mode.MULTIPLY);//like
+                            flag = true;
+                            System.out.println("AFlag " + flag + " " + (String) view.getTag());
+
+                        }
                         m.updateEcho((String) view.getTag());
                     }
                 }
@@ -78,10 +95,21 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
 
         echoButton1.setOnClickListener(
                 new View.OnClickListener() {
+
+                    boolean flag = true;
                     @Override
-                    public void onClick(View view1) {
-                        MainActivity m = (MainActivity) view1.getContext();
-                        m.updateNecho((String) view1.getTag());
+                    public void onClick(View view) {
+                        MainActivity m = (MainActivity) view.getContext();
+                        System.out.println("Flag " + flag + " " + (String) view.getTag());
+
+                        if (flag) {
+                            view.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);//like
+                            flag = false;
+                        } else {
+                            view.getBackground().setColorFilter(Color.YELLOW, PorterDuff.Mode.MULTIPLY);//like
+                            flag = true;
+                        }
+                        m.updateNecho((String) view.getTag());
                     }
                 }
 
@@ -109,12 +137,13 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
 
         // check if we already clicked
         boolean clickable = !dbUtil.contains(question.getKey());
+        boolean dClickable = !dbUtil.contains("d"+question.getKey());
 
-        echoButton.setClickable(clickable);//like
-        echoButton.setEnabled(clickable);
-        echoButton1.setClickable(clickable);//dislike
-        echoButton1.setEnabled(clickable);
-        view.setClickable(clickable);
+        //echoButton.setClickable(clickable);//like
+        //echoButton.setEnabled(clickable);
+        //echoButton1.setClickable(dClickable);//dislike
+        //echoButton1.setEnabled(dClickable);
+        //view.setClickable(clickable);
 
 
         // http://stackoverflow.com/questions/8743120/how-to-grey-out-a-button
