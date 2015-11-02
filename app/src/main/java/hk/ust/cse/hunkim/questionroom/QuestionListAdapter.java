@@ -50,6 +50,7 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
     protected void populateView(View view, Question question) {
         DBUtil dbUtil = activity.getDbutil();
 
+
         // Map a Chat object to an entry in our listview
         int echo = question.getEcho();//like button
         Button echoButton = (Button) view.findViewById(R.id.echo);

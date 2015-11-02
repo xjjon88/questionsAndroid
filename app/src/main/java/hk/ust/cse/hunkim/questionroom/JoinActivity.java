@@ -52,7 +52,7 @@ public class JoinActivity extends Activity {
         roomNameView.setError(null);
 
         // Store values at the time of the login attempt.
-        String room_name = roomNameView.getText().toString();
+        String room_name = roomNameView.getText().toString().toLowerCase();
 
         boolean cancel = false;
 

@@ -78,6 +78,9 @@ public class Question implements Comparable<Question> {
         this.headLastChar = head.substring(head.length() - 1);
 
         this.timestamp = new Date().getTime();
+
+        this.pinned = false;
+        this.hidden = false;
     }
 
     /**

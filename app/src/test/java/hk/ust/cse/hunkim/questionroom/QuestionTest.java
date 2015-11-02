@@ -68,5 +68,15 @@ public class QuestionTest  extends TestCase {
         assertEquals("HeadLastChar", "?", q.getHeadLastChar());
     }
 
+    @SmallTest
+    public void testPinned(){
+        assertEquals("Pinned", false, q.isPinned());
+    }
+
+    @SmallTest
+    public void testHidden(){
+        assertEquals("Hidden", false, q.isHidden());
+    }
+
 
 }
