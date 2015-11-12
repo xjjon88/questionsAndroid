@@ -4,9 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 
@@ -20,6 +24,14 @@ public class JoinActivity extends Activity {
      */
     // UI references.
     private TextView roomNameView;
+
+    private ListView mListView;
+    private String[] suggestRooms = new String[]{
+            "comp3111",
+            "comp3511",
+            "comp1023",
+            "fin1195"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +51,27 @@ public class JoinActivity extends Activity {
                 return true;
             }
         });
+
+
+        //suggested rooms list //Jonathan Yu
+        mListView = (ListView) findViewById(R.id.suggestRoomListView);
+        ArrayAdapter adapter = new ArrayAdapter(this, R.layout.suggested_room, R.id.suggestedRoomTextView, suggestRooms);
+        mListView.setAdapter(adapter);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                roomNameView.setText(suggestRooms[position]);
+                Log.i("COMP3111", "setting text: " + suggestRooms[position]);
+
+
+                attemptJoin((TextView) view.findViewById(R.id.suggestedRoomTextView));
+
+
+            }
+        });
+
+
     }
 
 
@@ -67,7 +100,7 @@ public class JoinActivity extends Activity {
         }
 
         if (cancel) {
-            roomNameView.setText("");
+            //.roomNameView.setText("");
             roomNameView.requestFocus();
         } else {
             // Start main activity

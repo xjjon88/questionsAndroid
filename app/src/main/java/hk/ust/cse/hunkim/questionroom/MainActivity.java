@@ -32,6 +32,7 @@ public class MainActivity extends ListActivity {
     private ValueEventListener mConnectedListener;
     private QuestionListAdapter mChatListAdapter;
 
+
     private DBUtil dbutil;
 
     public DBUtil getDbutil() {
@@ -41,9 +42,6 @@ public class MainActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
 
         //initialized once with an Android context.
         Firebase.setAndroidContext(this);
@@ -94,6 +92,8 @@ public class MainActivity extends ListActivity {
         // get the DB Helper
         DBHelper mDbHelper = new DBHelper(this);
         dbutil = new DBUtil(mDbHelper);
+
+
     }
 
     @Override
@@ -218,13 +218,11 @@ public class MainActivity extends ListActivity {
 
     public void updateEcho(String key) {                    //like
 
-
         final int change;
 
         if(dbutil.contains("d" + key) && !dbutil.contains("p"+key)){
             updateNecho(key);
         }
-
         if (dbutil.contains("p"+key)) {
             change = -1;
         }else{
@@ -247,8 +245,6 @@ public class MainActivity extends ListActivity {
                     }
                 }
         );
-
-
 
         final Firebase orderRef = mFirebaseRef.child(key).child("order");
         orderRef.addListenerForSingleValueEvent(
@@ -278,7 +274,6 @@ public class MainActivity extends ListActivity {
     public void removeKey(String key){
         dbutil.delete(key);
     }
-
 
     public void Close(View view) {
         finish();
