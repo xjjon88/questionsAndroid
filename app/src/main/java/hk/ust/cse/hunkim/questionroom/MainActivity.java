@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -32,6 +33,7 @@ public class MainActivity extends ListActivity {
     private ValueEventListener mConnectedListener;
     private QuestionListAdapter mChatListAdapter;
 
+    private Toolbar toolbar;
 
     private DBUtil dbutil;
 
@@ -93,8 +95,15 @@ public class MainActivity extends ListActivity {
         DBHelper mDbHelper = new DBHelper(this);
         dbutil = new DBUtil(mDbHelper);
 
+        //setup toolbar
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.question_tool_bar);
+
+
 
     }
+
+
+
 
     @Override
     public void onStart() {
@@ -277,5 +286,14 @@ public class MainActivity extends ListActivity {
 
     public void Close(View view) {
         finish();
+    }
+
+    /**
+     * Toggle questions / fade in and out
+     * @param view
+     */
+    public void toggle_contents(View view){
+
+        view.setVisibility(view.isShown() ? View.GONE : View.VISIBLE);
     }
 }
