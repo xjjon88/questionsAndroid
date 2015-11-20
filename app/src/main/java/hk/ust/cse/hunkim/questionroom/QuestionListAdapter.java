@@ -168,8 +168,8 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
         view.setTag(question.getKey());  // store key in the view
 
 
+        //Setup hide / expand of question body //Jonathan Yu
         TextView textView = (TextView) view.findViewById(R.id.head_textView);
-
         final LinearLayout layout = (LinearLayout) view.findViewById(R.id.question_body_layout);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,6 +191,25 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
                 }
             }
         });
+
+        //Setup pinned threads //Jonathan Yu
+        boolean pinned = question.isPinned();
+        if(pinned){
+            textView.setBackgroundColor(Color.GREEN);
+        }else{
+            textView.setBackgroundColor(Color.WHITE);
+        }
+
+
+        //setup hidden threads // Jonathan Yu
+        boolean hidden = question.isHidden();
+        LinearLayout questionContainer = (LinearLayout) view.findViewById(R.id.question_layout_container);
+
+        if(hidden){
+            questionContainer.setVisibility(View.GONE);
+        }else{
+            questionContainer.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
