@@ -3,25 +3,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="horizontal">
+    android:orientation="vertical"
+    android:clickable="true"
+    android:onClick="toggle_contents">
 
-     <Button
+    <TextView
+        android:id="@+id/head_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:drawableLeft="@drawable/down"
+        android:drawablePadding="5dp"
+
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/question_body_layout"
+        android:visibility="gone">
+        <Button
         android:id="@+id/echo"
         android:drawableLeft="@drawable/like24"
         android:layout_width="70dp"
         android:layout_height="40dp"
         android:textSize="12dp" />
 
-    <Button
-        android:id="@+id/echo1"
-        android:drawableLeft="@drawable/dislike24"
-        android:layout_width="70dp"
-        android:layout_height="40dp"
-        android:textSize="12dp" />
+        <Button
+            android:id="@+id/echo1"
+            android:drawableLeft="@drawable/dislike24"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:textSize="12dp" />
 
-    <TextView
-        android:id="@+id/head_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp" />
+        <TextView
+            android:id="@+id/body_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp" />
+
+    </LinearLayout>
+
+
+
+
+
 </LinearLayout>
