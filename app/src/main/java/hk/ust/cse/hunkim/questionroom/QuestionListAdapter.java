@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.firebase.client.Query;
@@ -123,9 +124,16 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
             msgString += "<font color=red>NEW </font>";
         }
 
-        msgString += "<B>" + question.getHead() + "</B> <p>" + question.getDesc() + "</p>";
+        msgString += "<B>" + question.getHead() + "</B>";
 
-        ((TextView) view.findViewById(R.id.head_desc)).setText(Html.fromHtml(msgString));
+        final TextView headTextView = (TextView) view.findViewById(R.id.head_textView);
+
+        headTextView.setText(Html.fromHtml(msgString));
+
+        msgString =  "<p>" + question.getDesc() + "</p>";
+
+        ((TextView) view.findViewById(R.id.body_textView)).setText(Html.fromHtml(msgString));
+
         view.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
@@ -158,6 +166,31 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
         }
 
         view.setTag(question.getKey());  // store key in the view
+
+
+        TextView textView = (TextView) view.findViewById(R.id.head_textView);
+
+        final LinearLayout layout = (LinearLayout) view.findViewById(R.id.question_body_layout);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+                if ( layout.getVisibility() == View.GONE)
+                {
+                    //expandedChildList.set(arg2, true);
+                    layout.setVisibility(View.VISIBLE);
+                    headTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.up, 0, 0, 0);
+                }
+                else
+                {
+                    //expandedChildList.set(arg2, false);
+                    layout.setVisibility(View.GONE);
+                    headTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.down, 0, 0, 0);
+                }
+            }
+        });
     }
 
     @Override
@@ -169,4 +202,6 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
     protected void setKey(String key, Question model) {
         model.setKey(key);
     }
+
+
 }
