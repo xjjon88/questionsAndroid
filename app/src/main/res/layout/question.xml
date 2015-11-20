@@ -5,11 +5,12 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:clickable="true"
-    android:onClick="toggle_contents">
+    android:onClick="toggle_contents"
+    android:id="@+id/question_layout_container">
 
     <TextView
         android:id="@+id/head_textView"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:drawableLeft="@drawable/down"
