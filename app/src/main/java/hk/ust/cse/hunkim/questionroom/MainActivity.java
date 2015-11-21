@@ -22,6 +22,7 @@ import com.firebase.client.ValueEventListener;
 import hk.ust.cse.hunkim.questionroom.db.DBHelper;
 import hk.ust.cse.hunkim.questionroom.db.DBUtil;
 import hk.ust.cse.hunkim.questionroom.question.Question;
+import hk.ust.cse.hunkim.questionroom.question.Reply;
 
 public class MainActivity extends ListActivity {
 
@@ -95,11 +96,6 @@ public class MainActivity extends ListActivity {
         DBHelper mDbHelper = new DBHelper(this);
         dbutil = new DBUtil(mDbHelper);
 
-        //setup toolbar
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.question_tool_bar);
-
-
-
     }
 
 
@@ -161,8 +157,20 @@ public class MainActivity extends ListActivity {
             mFirebaseRef.push().setValue(question);
             inputText.setText("");
 
-            //mChatListAdapter.notifyDataSetChanged();
+            mChatListAdapter.notifyDataSetChanged();
         }
+    }
+
+    public void sendReply(Question question, Reply reply){
+            int length = question.getReplies().size();
+
+
+            final Firebase replies = mFirebaseRef.child(question.getKey()).child("replies/" + length);
+            replies.setValue(reply);
+            mChatListAdapter.notifyDataSetChanged();
+
+
+
     }
 
 
