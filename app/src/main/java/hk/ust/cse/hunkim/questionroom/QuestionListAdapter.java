@@ -99,12 +99,15 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
         }
 
         msgString += "<B>" + question.getHead() + "</B>";
+        msgString = BadWordFilter(msgString);
+
 
         final TextView headTextView = (TextView) view.findViewById(R.id.head_textView);
 
         headTextView.setText(Html.fromHtml(msgString));
 
         msgString = question.getDesc();
+        msgString = BadWordFilter(msgString);
 
         ((TextView) view.findViewById(R.id.body_textView)).setText(Html.fromHtml(msgString));
 
@@ -153,7 +156,7 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
                     ) {
                 LinearLayout replyLayout = (LinearLayout) LayoutInflater.from(view.getContext()).inflate(R.layout.reply, null);
                 TextView replyTextView = (TextView) replyLayout.findViewById(R.id.reply_textView);
-                replyTextView.setText(reply.getHead());
+                replyTextView.setText(BadWordFilter(reply.getHead()));
                 replyContainer.addView(replyLayout);
             }
 
@@ -202,12 +205,71 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
 
     @Override
     protected void sortModels(List<Question> mModels) {
-        Collections.sort(mModels);
+        Collections.sort(mModels, Question.sortingComparator);
     }
 
     @Override
     protected void setKey(String key, Question model) {
         model.setKey(key);
+    }
+
+    protected String BadWordFilter(String message){
+        String  []filterWords = {
+                "anal",
+                "anus",
+                "ass",
+                "bastard",
+                "bitch",
+                "boob",
+                "cock",
+                "cum",
+                "cunt",
+                "dick",
+                "dildo",
+                "dyke",
+                "fag",
+                "faggot",
+                "fuck",
+                "fuk",
+                "handjob",
+                "homo",
+                "jizz",
+                "kike",
+                "kunt",
+                "muff",
+                "nigger",
+                "penis",
+                "piss",
+                "poop",
+                "pussy",
+                "queer",
+                "rape",
+                "semen",
+                "sex",
+                "shit",
+                "slut",
+                "titties",
+                "twat",
+                "vagina",
+                "vulva",
+                "wank"};
+
+        int i;
+        String toBeFilter= message;
+
+        for(i=0;i<filterWords.length;i++)	{
+            //Pattern p = Pattern.compile(filterWords[i],Pattern.CASE_INSENSITIVE);
+            String regex= filterWords[i];
+            //	Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+            //	String re = new RegExp(swear[i],"gi");
+            String replacement="";
+            for(int j=0;j<filterWords[i].length();j++) replacement = replacement +"*";
+            toBeFilter = toBeFilter.replaceAll("(?i)"+regex,replacement);
+
+
+        }
+        return toBeFilter;
+
     }
 
 

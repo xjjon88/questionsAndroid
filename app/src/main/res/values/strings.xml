@@ -15,5 +15,12 @@
     <string name="action_refresh">Refresh</string>
     <string name="action_help">Help</string>
     <string name="action_check_updates">Check Updates</string>
+    
+    <string-array name="sort_array">
+        <item>Default by time</item>
+        <item>Highest Like</item>
+        <item>Highest Dislike</item>
+    </string-array>
+
 
 </resources>
