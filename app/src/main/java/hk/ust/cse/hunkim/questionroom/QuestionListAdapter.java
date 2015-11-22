@@ -99,7 +99,7 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
         }
 
         msgString += "<B>" + question.getHead() + "</B>";
-        msgString = BadWordFilter(msgString);
+        msgString = badWordFilter(msgString);
 
 
         final TextView headTextView = (TextView) view.findViewById(R.id.head_textView);
@@ -107,7 +107,7 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
         headTextView.setText(Html.fromHtml(msgString));
 
         msgString = question.getDesc();
-        msgString = BadWordFilter(msgString);
+        msgString = badWordFilter(msgString);
 
         ((TextView) view.findViewById(R.id.body_textView)).setText(Html.fromHtml(msgString));
 
@@ -156,7 +156,7 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
                     ) {
                 LinearLayout replyLayout = (LinearLayout) LayoutInflater.from(view.getContext()).inflate(R.layout.reply, null);
                 TextView replyTextView = (TextView) replyLayout.findViewById(R.id.reply_textView);
-                replyTextView.setText(BadWordFilter(reply.getHead()));
+                replyTextView.setText(badWordFilter(reply.getHead()));
                 replyContainer.addView(replyLayout);
             }
 
@@ -174,7 +174,7 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
                 replyTextView.setHint("Reply Here");
 
                 new AlertDialog.Builder(view.getContext())
-                        .setTitle(question.getHead())
+                        .setTitle(badWordFilter(question.getHead()))
                         .setView(replyTextView)
                         .setPositiveButton("Post", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
@@ -213,7 +213,12 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
         model.setKey(key);
     }
 
-    protected String BadWordFilter(String message){
+    /**
+     * Filters out profane words, returns filtered string
+     * @param message
+     * @return
+     */
+    protected String badWordFilter(String message){
         String  []filterWords = {
                 "anal",
                 "anus",
