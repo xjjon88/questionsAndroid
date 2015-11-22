@@ -68,10 +68,6 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //MainActivity m = (MainActivity) view.getContext();
-                        //System.out.println((String) view.getTag());
-                        //m.updateEcho((String) view.getTag());
-
                        activity.updateEcho((String) view.getTag());
                     }
                 }
@@ -152,7 +148,7 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
         LinearLayout replyContainer = (LinearLayout) view.findViewById(R.id.replyContainer);
         replyContainer.removeAllViews();
 
-        System.out.println("SIZE " + question.getReplies().size());
+       
             for (Reply reply : question.getReplies()
                     ) {
                 LinearLayout replyLayout = (LinearLayout) LayoutInflater.from(view.getContext()).inflate(R.layout.reply, null);
