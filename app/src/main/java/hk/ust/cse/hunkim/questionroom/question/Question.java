@@ -1,5 +1,6 @@
 package hk.ust.cse.hunkim.questionroom.question;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -26,6 +27,7 @@ public class Question implements Comparable<Question> {
     private boolean newQuestion;
     private boolean pinned;
     private boolean hidden;
+    private ArrayList<Reply> replies;
 
     public boolean isHidden() {
         return hidden;
@@ -78,7 +80,6 @@ public class Question implements Comparable<Question> {
         this.headLastChar = head.substring(head.length() - 1);
 
         this.timestamp = new Date().getTime();
-
         this.pinned = false;
         this.hidden = false;
     }
@@ -212,5 +213,17 @@ public class Question implements Comparable<Question> {
     @Override
     public int hashCode() {
         return key.hashCode();
+    }
+
+    public ArrayList<Reply> getReplies() {
+
+        if(replies == null)
+            replies = new ArrayList<Reply>();
+
+        return replies;
+    }
+
+    public void setReplies(ArrayList<Reply> replies) {
+        this.replies = replies;
     }
 }

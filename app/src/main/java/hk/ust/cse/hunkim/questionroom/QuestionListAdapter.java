@@ -1,11 +1,14 @@
 package hk.ust.cse.hunkim.questionroom;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,6 +19,7 @@ import java.util.List;
 
 import hk.ust.cse.hunkim.questionroom.db.DBUtil;
 import hk.ust.cse.hunkim.questionroom.question.Question;
+import hk.ust.cse.hunkim.questionroom.question.Reply;
 
 /**
  * @author greg
@@ -48,7 +52,7 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
      * @param question An instance representing the current state of a chat message
      */
     @Override
-    protected void populateView(View view, Question question) {
+    protected void populateView(final View view, final Question question) {
         DBUtil dbUtil = activity.getDbutil();
 
 
@@ -62,27 +66,9 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
 
         echoButton.setOnClickListener(
                 new View.OnClickListener() {
-                    boolean flag = true;
                     @Override
                     public void onClick(View view) {
-                        //MainActivity m = (MainActivity) view.getContext();
-                        //System.out.println((String) view.getTag());
-                        //m.updateEcho((String) view.getTag());
-
-                        MainActivity m = (MainActivity) view.getContext();
-                        System.out.println("Flag " + flag + " " + (String) view.getTag());
-
-                        if (flag) {
-                            view.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);//like
-                            flag = false;
-                            System.out.println("AFlag " + flag + " " + (String) view.getTag());
-                        } else {
-                            view.getBackground().setColorFilter(Color.YELLOW, PorterDuff.Mode.MULTIPLY);//like
-                            flag = true;
-                            System.out.println("AFlag " + flag + " " + (String) view.getTag());
-
-                        }
-                        m.updateEcho((String) view.getTag());
+                       activity.updateEcho((String) view.getTag());
                     }
                 }
 
@@ -97,21 +83,9 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
 
         echoButton1.setOnClickListener(
                 new View.OnClickListener() {
-
-                    boolean flag = true;
                     @Override
                     public void onClick(View view) {
-                        MainActivity m = (MainActivity) view.getContext();
-                        System.out.println("Flag " + flag + " " + (String) view.getTag());
-
-                        if (flag) {
-                            view.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);//like
-                            flag = false;
-                        } else {
-                            view.getBackground().setColorFilter(Color.YELLOW, PorterDuff.Mode.MULTIPLY);//like
-                            flag = true;
-                        }
-                        m.updateNecho((String) view.getTag());
+                       activity.updateNecho((String) view.getTag());
                     }
                 }
 
@@ -130,40 +104,11 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
 
         headTextView.setText(Html.fromHtml(msgString));
 
-        msgString =  "<p>" + question.getDesc() + "</p>";
+        msgString = question.getDesc();
 
         ((TextView) view.findViewById(R.id.body_textView)).setText(Html.fromHtml(msgString));
 
-        view.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        MainActivity m = (MainActivity) view.getContext();
-                                        //m.updateEcho((String) view.getTag());
-                                    }
-                                }
 
-        );
-
-        // check if we already clicked
-        boolean clickable = !dbUtil.contains(question.getKey());
-        boolean dClickable = !dbUtil.contains("d"+question.getKey());
-
-        //echoButton.setClickable(clickable);//like
-        //echoButton.setEnabled(clickable);
-        //echoButton1.setClickable(dClickable);//dislike
-        //echoButton1.setEnabled(dClickable);
-        //view.setClickable(clickable);
-
-
-        // http://stackoverflow.com/questions/8743120/how-to-grey-out-a-button
-        // grey out our button
-        if (clickable) {
-            echoButton.getBackground().setColorFilter(null);//like
-            echoButton1.getBackground().setColorFilter(null);//dislike
-        } else {
-            echoButton.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);//like
-            echoButton1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);//dislike
-        }
 
         view.setTag(question.getKey());  // store key in the view
 
@@ -174,8 +119,6 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
 
                 if ( layout.getVisibility() == View.GONE)
                 {
@@ -201,6 +144,50 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
         }
 
 
+        //Add replies to the question //Jonathan Yu
+        LinearLayout replyContainer = (LinearLayout) view.findViewById(R.id.replyContainer);
+        replyContainer.removeAllViews();
+
+       
+            for (Reply reply : question.getReplies()
+                    ) {
+                LinearLayout replyLayout = (LinearLayout) LayoutInflater.from(view.getContext()).inflate(R.layout.reply, null);
+                TextView replyTextView = (TextView) replyLayout.findViewById(R.id.reply_textView);
+                replyTextView.setText(reply.getHead());
+                replyContainer.addView(replyLayout);
+            }
+
+
+        //Add Reply Dialog //Jonathan Yu
+        Button replyButton = (Button) view.findViewById(R.id.replyButton);
+        replyButton.setOnClickListener(new View.OnClickListener() {
+
+            String reply;
+            @Override
+            public void onClick(View v) {
+
+                final EditText replyTextView = new EditText(view.getContext());
+
+                replyTextView.setHint("Reply Here");
+
+                new AlertDialog.Builder(view.getContext())
+                        .setTitle(question.getHead())
+                        .setView(replyTextView)
+                        .setPositiveButton("Post", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                reply = replyTextView.getText().toString();
+                                Reply newReply = new Reply(reply);
+                                activity.sendReply(question, newReply);
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                            }
+                        })
+                        .show();
+            }
+        });
+
         //setup hidden threads // Jonathan Yu
         boolean hidden = question.isHidden();
         LinearLayout questionContainer = (LinearLayout) view.findViewById(R.id.question_layout_container);
@@ -210,6 +197,7 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
         }else{
             questionContainer.setVisibility(View.VISIBLE);
         }
+
     }
 
     @Override
