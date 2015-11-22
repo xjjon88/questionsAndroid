@@ -205,7 +205,7 @@ public class QuestionListAdapter extends FirebaseListAdapter<Question> {
 
     @Override
     protected void sortModels(List<Question> mModels) {
-        Collections.sort(mModels);
+        Collections.sort(mModels, Question.sortingComparator);
     }
 
     @Override
