@@ -1,6 +1,8 @@
 package hk.ust.cse.hunkim.questionroom.question;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Comparator;
 
 /**
  * Created by hunkim on 7/16/15.
@@ -26,6 +28,7 @@ public class Question implements Comparable<Question> {
     private boolean newQuestion;
     private boolean pinned;
     private boolean hidden;
+    private ArrayList<Reply> replies;
 
     public boolean isHidden() {
         return hidden;
@@ -78,7 +81,6 @@ public class Question implements Comparable<Question> {
         this.headLastChar = head.substring(head.length() - 1);
 
         this.timestamp = new Date().getTime();
-
         this.pinned = false;
         this.hidden = false;
     }
@@ -213,4 +215,39 @@ public class Question implements Comparable<Question> {
     public int hashCode() {
         return key.hashCode();
     }
+
+    public ArrayList<Reply> getReplies() {
+
+        if(replies == null)
+            replies = new ArrayList<Reply>();
+
+        return replies;
+    }
+
+    public void setReplies(ArrayList<Reply> replies) {
+        this.replies = replies;
+    }
+    
+    public static Comparator<Question> timeComparator = new Comparator<Question>() {
+        public int compare(Question q1, Question q2) {
+            long value = q2.getTimestamp() - q1.getTimestamp();
+            if(value > 0)
+                return 1;
+            else if(value == 0)
+                return 0;
+            else return -1;
+        }
+    };
+    public static Comparator<Question> echoComparator = new Comparator<Question>() {
+        public int compare(Question q1, Question q2) {
+            return q2.getEcho() - q1.getEcho();
+        }
+    };
+    public static Comparator<Question> nechoComparator = new Comparator<Question>() {
+        public int compare(Question q1, Question q2) {
+            return q2.getNecho() - q1.getNecho();
+        }
+    };
+    public static Comparator<Question> sortingComparator = timeComparator;
+    
 }

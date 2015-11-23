@@ -13,15 +13,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.util.Comparator;
+
 import hk.ust.cse.hunkim.questionroom.db.DBHelper;
 import hk.ust.cse.hunkim.questionroom.db.DBUtil;
 import hk.ust.cse.hunkim.questionroom.question.Question;
+import hk.ust.cse.hunkim.questionroom.question.Reply;
 
 public class MainActivity extends ListActivity {
 
@@ -94,15 +100,49 @@ public class MainActivity extends ListActivity {
         // get the DB Helper
         DBHelper mDbHelper = new DBHelper(this);
         dbutil = new DBUtil(mDbHelper);
-
-        //setup toolbar
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.question_tool_bar);
-
-
+        
+        Spinner spinner = (Spinner) findViewById(R.id.sortSpinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.sort_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        addListenerOnSpinnerItemSelection();
 
     }
 
+    // Add listener for sorting
+    public void addListenerOnSpinnerItemSelection() {
+        Spinner spinner = (Spinner) findViewById(R.id.sortSpinner);
+        spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+    }
 
+    public class CustomOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
+        public void onItemSelected(AdapterView<?> parent, View view, int pos,long id) {
+            switch (parent.getSelectedItemPosition()) {
+                case 0:
+                    setSorting(Question.timeComparator);
+                    break;
+                case 1:
+                    setSorting(Question.echoComparator);
+                    break;
+                case 2:
+                    setSorting(Question.nechoComparator);
+                    break;
+            }
+        }
+        public void onNothingSelected(AdapterView<?> arg0) {
+        }
+    }
+
+    public void setSorting(Comparator<Question> Comparator){
+        Question.sortingComparator = Comparator;
+        ListView listView = getListView();
+        mChatListAdapter.cleanup();
+        mChatListAdapter = new QuestionListAdapter(
+                mFirebaseRef.orderByChild("timestamp").limitToLast(200),
+                this, R.layout.question, roomName);
+        listView.setAdapter(mChatListAdapter);
+    }
 
 
     @Override
@@ -113,7 +153,7 @@ public class MainActivity extends ListActivity {
         final ListView listView = getListView();
         // Tell our list adapter that we only want 200 messages at a time
         mChatListAdapter = new QuestionListAdapter(
-                mFirebaseRef.orderByChild("echo").limitToFirst(200),
+                mFirebaseRef.orderByChild("timestamp").limitToLast(200),
                 this, R.layout.question, roomName);
         listView.setAdapter(mChatListAdapter);
 
@@ -161,8 +201,20 @@ public class MainActivity extends ListActivity {
             mFirebaseRef.push().setValue(question);
             inputText.setText("");
 
-            //mChatListAdapter.notifyDataSetChanged();
+            mChatListAdapter.notifyDataSetChanged();
         }
+    }
+
+    public void sendReply(Question question, Reply reply){
+            int length = question.getReplies().size();
+
+
+            final Firebase replies = mFirebaseRef.child(question.getKey()).child("replies/" + length);
+            replies.setValue(reply);
+            mChatListAdapter.notifyDataSetChanged();
+
+
+
     }
 
 

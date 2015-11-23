@@ -30,9 +30,10 @@
         android:id="@android:id/list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/close"
         android:layout_above="@+id/listFooter"
-        android:transcriptMode="alwaysScroll" />
+        android:transcriptMode="alwaysScroll" 
+        android:layout_below="@+id/sortSpinner"
+        android:layout_alignParentStart="true"/>
 
 
     <LinearLayout
@@ -57,6 +58,24 @@
             android:layout_height="wrap_content"
             android:src="@android:drawable/ic_menu_send" />
     </LinearLayout>
+    
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sortSpinner"
+        android:layout_below="@+id/roomTitle"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/sortText"
+        android:spinnerMode="dropdown" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" Sorting: "
+        android:id="@+id/sortText"
+        android:layout_alignTop="@+id/sortSpinner"
+        android:layout_alignParentStart="true"
+        android:textSize="16sp"/>
 
 
 </RelativeLayout>
