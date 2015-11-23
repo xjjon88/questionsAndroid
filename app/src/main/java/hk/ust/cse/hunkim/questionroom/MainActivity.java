@@ -339,13 +339,5 @@ public class MainActivity extends ListActivity {
     public void Close(View view) {
         finish();
     }
-
-    /**
-     * Toggle questions / fade in and out
-     * @param view
-     */
-    public void toggle_contents(View view){
-
-        view.setVisibility(view.isShown() ? View.GONE : View.VISIBLE);
-    }
+    
 }
