@@ -49,6 +49,11 @@ public class MainActivity extends ListActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (JoinActivity.mode ==0) {
+            setTheme(R.style.Theme_Night);
+        } else if (JoinActivity.mode ==1) {
+            setTheme(R.style.AppTheme);
+        }
         super.onCreate(savedInstanceState);
 
         //initialized once with an Android context.
