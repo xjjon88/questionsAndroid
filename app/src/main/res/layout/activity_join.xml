@@ -43,6 +43,28 @@
         android:id="@+id/suggestRoomListView"
         android:layout_gravity="center_horizontal" />
 
+    <RadioGroup
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:translationY="50dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <RadioButton
+            android:text="Night Black"
+            android:id="@+id/Night"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </RadioButton>
+        <RadioButton
+            android:text="Day White"
+            android:id="@+id/Apptheme"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </RadioButton>
+    </RadioGroup>
+
 
 </LinearLayout>
 
