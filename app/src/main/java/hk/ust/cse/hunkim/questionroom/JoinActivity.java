@@ -11,8 +11,9 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
-  
+
 
 /**
  * A login screen that offers login via email/password.
@@ -24,7 +25,7 @@ public class JoinActivity extends Activity {
      */
     // UI references.
     private TextView roomNameView;
-
+    public static int mode=1;
     private ListView mListView;
     private String[] suggestRooms = new String[]{
             "comp3111",
@@ -35,9 +36,37 @@ public class JoinActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if ("Night".equalsIgnoreCase(getIntent().getStringExtra("Theme")) || mode == 0) {
+            setTheme(R.style.Theme_Night);
+        } else if ("App".equalsIgnoreCase(getIntent().getStringExtra("Theme"))|| mode == 1) {
+            setTheme(R.style.AppTheme);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
 
+        RadioButton nightblack = (RadioButton) findViewById(R.id.Night);
+        nightblack.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                //Toast.makeText(context, "Large Text Selected", Toast.LENGTH_SHORT).show();
+                Intent intent = getIntent();
+                intent.putExtra("Theme", "Night");
+                finish();
+                startActivity(intent);
+                mode = 0;
+            }
+        });
+
+        RadioButton Apptheme = (RadioButton) findViewById(R.id.Apptheme);
+        Apptheme.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                //Toast.makeText(context, "Small Text Selected", Toast.LENGTH_SHORT).show();
+                Intent intent = getIntent();
+                intent.putExtra("Theme", "Apptheme");
+                finish();
+                startActivity(intent);
+                mode = 1;
+            }
+        });
 
         // Set up the login form.
         roomNameView = (TextView) findViewById(R.id.room_name);
