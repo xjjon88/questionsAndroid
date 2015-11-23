@@ -5,7 +5,6 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:clickable="true"
-    android:onClick="toggle_contents"
     android:id="@+id/question_layout_container">
 
     <TextView
@@ -27,33 +26,34 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center">
             <Button
                 android:id="@+id/echo"
                 android:drawableLeft="@drawable/like24"
-                android:layout_width="70dp"
+                android:layout_width="65dp"
                 android:layout_height="40dp"
                 android:textSize="12dp" />
 
             <Button
                 android:id="@+id/echo1"
                 android:drawableLeft="@drawable/dislike24"
-                android:layout_width="70dp"
+                android:layout_width="65dp"
                 android:layout_height="40dp"
                 android:textSize="12dp" />
 
             <Button
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:text="Reply"
                 android:id="@+id/replyButton"/>
 
-            <TextView
-                android:id="@+id/body_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp" />
         </LinearLayout>
+        <TextView
+            android:id="@+id/body_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+             />
 
 
         <LinearLayout

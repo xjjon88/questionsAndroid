@@ -49,6 +49,11 @@ public class MainActivity extends ListActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (JoinActivity.mode ==0) {
+            setTheme(R.style.Theme_Night);
+        } else if (JoinActivity.mode ==1) {
+            setTheme(R.style.AppTheme);
+        }
         super.onCreate(savedInstanceState);
 
         //initialized once with an Android context.
@@ -339,13 +344,5 @@ public class MainActivity extends ListActivity {
     public void Close(View view) {
         finish();
     }
-
-    /**
-     * Toggle questions / fade in and out
-     * @param view
-     */
-    public void toggle_contents(View view){
-
-        view.setVisibility(view.isShown() ? View.GONE : View.VISIBLE);
-    }
+    
 }
